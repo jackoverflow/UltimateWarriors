@@ -1,0 +1,6 @@
+@UltimateWarriors.Server_HostAddress = http://localhost:5108
+
+GET {{UltimateWarriors.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

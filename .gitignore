@@ -1,0 +1,33 @@
+# ASP.NET Core
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
+*.vs/
+.vscode/
+project.lock.json
+project.fragment.lock.json
+*.db
+*.db-journal
+
+# React
+node_modules/
+build/
+dist/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains Rider
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db

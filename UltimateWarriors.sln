@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateWarriors.Server", "UltimateWarriors.Server\UltimateWarriors.Server.csproj", "{A2E2C433-7C6F-43EC-A217-E67C0EFA29ED}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ultimatewarriors.client", "ultimatewarriors.client\ultimatewarriors.client.esproj", "{EDAB88DB-C3E0-417B-A632-4017FD4FE01F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2E2C433-7C6F-43EC-A217-E67C0EFA29ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2E2C433-7C6F-43EC-A217-E67C0EFA29ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2E2C433-7C6F-43EC-A217-E67C0EFA29ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2E2C433-7C6F-43EC-A217-E67C0EFA29ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDAB88DB-C3E0-417B-A632-4017FD4FE01F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDAB88DB-C3E0-417B-A632-4017FD4FE01F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDAB88DB-C3E0-417B-A632-4017FD4FE01F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EDAB88DB-C3E0-417B-A632-4017FD4FE01F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDAB88DB-C3E0-417B-A632-4017FD4FE01F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDAB88DB-C3E0-417B-A632-4017FD4FE01F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
