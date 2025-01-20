@@ -29,6 +29,7 @@ class ErrorBoundary extends React.Component {
 
 function App() {
     const [forecasts, setForecasts] = useState();
+    const apiUrl = process.env.API_URL;
 
     useEffect(() => {
         populateWeatherData();
@@ -45,7 +46,7 @@ function App() {
     );
     
     async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
+        const response = await fetch(`${apiUrl}/weatherforecast`);
         if (response.ok) {
             const data = await response.json();
             setForecasts(data);
