@@ -8,6 +8,7 @@ namespace UltimateWarriors.Server.Repositories
     public interface IUltimateWarriorsRepository
     {
         Task<IEnumerable<Warriors>> GetAllWarriorsAsync();
+        Task<IEnumerable<Weapons>> GetAllWeaponsAsync();
         Task<int> InsertWarriorAsync(Warriors warrior);
         Task<int> InsertWeaponAsync(Weapons weapon);
         Task InsertWarriorWeaponAsync(WarriorWeapon warriorWeapon);
@@ -29,6 +30,16 @@ namespace UltimateWarriors.Server.Repositories
                 await connection.OpenAsync();
                 var warriors = await connection.QueryAsync<Warriors>("SELECT * FROM Warriors");
                 return warriors;
+            }
+        }
+
+        public async Task<IEnumerable<Weapons>> GetAllWeaponsAsync()
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var weapons = await connection.QueryAsync<Weapons>("SELECT * FROM Weapons");
+                return weapons;
             }
         }
 
