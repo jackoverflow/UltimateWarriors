@@ -1,12 +1,16 @@
 using Npgsql;
 using Dapper;
 using System.IO;
+using UltimateWarriors.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+// Register the repository
+builder.Services.AddScoped<IUltimateWarriorsRepository, UltimateWarriorsRepository>();
 
 // Configure CORS to allow requests from any origin
 builder.Services.AddCors(options =>
