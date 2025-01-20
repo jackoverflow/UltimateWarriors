@@ -47,8 +47,13 @@ export default defineConfig({
     },
     server: {
         proxy: {
+            '^/api': {
+                target: 'http://localhost:5108',
+                changeOrigin: true,
+                secure: false
+            },
             '^/weatherforecast': {
-                target,
+                target: 'http://localhost:5108',
                 secure: false
             }
         },
@@ -56,6 +61,11 @@ export default defineConfig({
         https: {
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
+        }
+    },
+    define: {
+        'process.env': {
+            REACT_APP_API_URL: process.env.REACT_APP_API_URL || 'http://localhost:5108/' // Default API URL
         }
     }
 })
