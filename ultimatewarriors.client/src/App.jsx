@@ -29,7 +29,7 @@ class ErrorBoundary extends React.Component {
 
 function App() {
     const [forecasts, setForecasts] = useState();
-    const apiUrl = process.env.API_URL;
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         populateWeatherData();
@@ -60,6 +60,7 @@ export default function AppWrapper() {
             <ErrorBoundary>
                 <App />
                 <Routes>
+                    <Route path="/" element={<h1>Welcome to the Weapon Creator!</h1>} />
                     <Route path="/create-weapon" element={<CreateWeapon />} />
                 </Routes>
             </ErrorBoundary>
