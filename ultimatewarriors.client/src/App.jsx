@@ -4,6 +4,8 @@ import { Link, Routes, Route, BrowserRouter } from 'react-router-dom';
 import React from 'react';
 import CreateWeapon from './Components/create-weapon.jsx';
 import WeaponList from './Components/weapon-list.jsx';
+import CreateWarrior from './Components/create-warrior.jsx';
+import WarriorList from './Components/warrior-list.jsx';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -38,14 +40,13 @@ function App() {
 
     return (
         <div>
-            <h1 id="tableLabel">Weather Forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            <p>
-                <Link to="/create-weapon">Create a New Weapon</Link>
-            </p>
-            <p>
-                <Link to="/weapons">View All Weapons</Link>
-            </p>
+            <h1>Ultimate Warriors</h1>
+            <nav>
+                <p><Link to="/create-weapon">Create a New Weapon</Link></p>
+                <p><Link to="/weapons">View All Weapons</Link></p>
+                <p><Link to="/create-warrior">Create a New Warrior</Link></p>
+                <p><Link to="/warriors">View All Warriors</Link></p>
+            </nav>
         </div>
     );
     
@@ -64,9 +65,11 @@ export default function AppWrapper() {
             <ErrorBoundary>
                 <App />
                 <Routes>
-                    <Route path="/" element={<h1>Welcome to the Weapon Creator!</h1>} />
+                    <Route path="/" element={<h1>Welcome to the Ultimate Warriors!</h1>} />
                     <Route path="/create-weapon" element={<CreateWeapon />} />
                     <Route path="/weapons" element={<WeaponList />} />
+                    <Route path="/create-warrior" element={<CreateWarrior />} />
+                    <Route path="/warriors" element={<WarriorList />} />
                 </Routes>
             </ErrorBoundary>
         </BrowserRouter>
