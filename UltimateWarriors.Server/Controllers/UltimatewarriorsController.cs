@@ -15,7 +15,7 @@ namespace UltimateWarriors.Server.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("warriors")]
         public async Task<IActionResult> GetWarriors()
         {
             var warriors = await _repository.GetAllWarriors();
