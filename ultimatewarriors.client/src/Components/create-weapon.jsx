@@ -1,9 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const CreateWeapon = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const onSubmit = async (data) => {
         const payload = {
@@ -17,8 +18,28 @@ const CreateWeapon = () => {
         try {
             const response = await axios.post('http://localhost:5108/api/Ultimatewarriors/weapons', payload);
             console.log('Weapon created:', response.data);
+            
+            // Success message
+            Swal.fire({
+                title: 'Success!',
+                text: 'Weapon created successfully',
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+            });
+            
+            // Reset form after successful submission
+            reset();
+            
         } catch (error) {
             console.error('Error creating weapon:', error);
+            
+            // Error message
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to create weapon. Please try again.',
+                icon: 'error',
+                confirmButtonColor: '#d33'
+            });
         }
     };
 
