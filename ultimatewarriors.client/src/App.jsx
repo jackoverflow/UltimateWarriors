@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { Link, Routes, Route, BrowserRouter } from 'react-router-dom';
 import React from 'react';
-import CreateWeapon from './components/create-weapon.jsx';
+import CreateWeapon from './Components/create-weapon.jsx';
+import WeaponList from './Components/weapon-list.jsx';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -42,6 +43,9 @@ function App() {
             <p>
                 <Link to="/create-weapon">Create a New Weapon</Link>
             </p>
+            <p>
+                <Link to="/weapons">View All Weapons</Link>
+            </p>
         </div>
     );
     
@@ -62,6 +66,7 @@ export default function AppWrapper() {
                 <Routes>
                     <Route path="/" element={<h1>Welcome to the Weapon Creator!</h1>} />
                     <Route path="/create-weapon" element={<CreateWeapon />} />
+                    <Route path="/weapons" element={<WeaponList />} />
                 </Routes>
             </ErrorBoundary>
         </BrowserRouter>

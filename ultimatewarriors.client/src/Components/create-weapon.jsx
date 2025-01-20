@@ -15,8 +15,7 @@ const CreateWeapon = () => {
         console.log('API URL:', process.env.REACT_APP_API_URL); 
 
         try {
-            // Ensure no extra '/' in the URL
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}api/Ultimatewarriors/weapons`, payload);
+            const response = await axios.post('http://localhost:5108/api/Ultimatewarriors/weapons', payload);
             console.log('Weapon created:', response.data);
         } catch (error) {
             console.error('Error creating weapon:', error);

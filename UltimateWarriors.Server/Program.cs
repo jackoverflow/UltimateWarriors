@@ -30,14 +30,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Move CORS before other middleware
+app.UseCors("AllowAllOrigins");
+
 // Reset and Initialize the database
 ResetDatabase(app.Configuration.GetConnectionString("DefaultConnection"));
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
-// Use CORS
-app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -45,6 +45,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Try using HTTP instead of HTTPS for local development
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
