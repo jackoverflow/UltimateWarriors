@@ -1,9 +1,31 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { Link } from 'react-router-dom';
+import { Link, Routes, Route, BrowserRouter } from 'react-router-dom';
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import ErrorBoundary from './ErrorBoundary';
+import CreateWeapon from './components/create-weapon.jsx';
+
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError(error) {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error, errorInfo) {
+        console.error("Error caught in ErrorBoundary: ", error, errorInfo);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return <h1>Something went wrong.</h1>;
+        }
+
+        return this.props.children; 
+    }
+}
 
 function App() {
     const [forecasts, setForecasts] = useState();
@@ -31,34 +53,14 @@ function App() {
     }
 }
 
-class ErrorBoundary extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { hasError: false };
-    }
-
-    static getDerivedStateFromError(error) {
-        return { hasError: true };
-    }
-
-    componentDidCatch(error, errorInfo) {
-        console.error("Error caught in ErrorBoundary: ", error, errorInfo);
-    }
-
-    render() {
-        if (this.state.hasError) {
-            return <h1>Something went wrong.</h1>;
-        }
-
-        return this.props.children; 
-    }
-}
-
 export default function AppWrapper() {
     return (
         <BrowserRouter>
             <ErrorBoundary>
                 <App />
+                <Routes>
+                    <Route path="/create-weapon" element={<CreateWeapon />} />
+                </Routes>
             </ErrorBoundary>
         </BrowserRouter>
     );
