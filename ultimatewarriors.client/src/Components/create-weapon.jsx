@@ -11,13 +11,15 @@ const CreateWeapon = () => {
             Description: data.Description
         };
 
+        // Debugging line to check the API URL
+        console.log('API URL:', process.env.REACT_APP_API_URL); 
+
         try {
-            const response = await axios.post('/api/weapons', payload);
+            // Ensure no extra '/' in the URL
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}api/Ultimatewarriors/weapons`, payload);
             console.log('Weapon created:', response.data);
-            // Optionally, reset the form or show a success message
         } catch (error) {
             console.error('Error creating weapon:', error);
-            // Optionally, show an error message
         }
     };
 
