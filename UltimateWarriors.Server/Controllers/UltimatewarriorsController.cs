@@ -22,6 +22,13 @@ namespace UltimateWarriors.Server.Controllers
             return Ok(warriors);
         }
 
+        [HttpGet("weapons")]
+        public async Task<IActionResult> GetWeapons()
+        {
+            var weapons = await _repository.GetAllWeaponsAsync();
+            return Ok(weapons);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateWarrior([FromBody] Warriors warrior)
         {
@@ -43,7 +50,7 @@ namespace UltimateWarriors.Server.Controllers
             }
 
             var weaponId = await _repository.InsertWeaponAsync(weapon);
-            return CreatedAtAction(nameof(CreateWeapon), new { id = weaponId }, weapon);
+            return CreatedAtAction(nameof(GetWeapons), new { id = weaponId }, weapon);
         }
 
         [HttpPost("warrior-weapon")]
