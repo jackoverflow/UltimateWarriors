@@ -18,14 +18,14 @@ namespace UltimateWarriors.Server.Repositories
 
         public async Task<IEnumerable<Warrior>> GetAllWarriors()
         {
-            const string sql = "SELECT Id, Name, Description FROM Warriors;";
+            const string sql = "SELECT Id, Name, Description FROM public.Warriors;";
             using var connection = new NpgsqlConnection(_connectionString);
             return await connection.QueryAsync<Warrior>(sql);
         }
 
         public async Task<IEnumerable<Weapon>> GetAllWeapons()
         {
-            const string sql = "SELECT Id, Name, Description FROM Weapons;";
+            const string sql = "SELECT Id, Name, Description FROM public.Weapons;";
             using var connection = new NpgsqlConnection(_connectionString);
             return await connection.QueryAsync<Weapon>(sql);
         }
@@ -33,7 +33,7 @@ namespace UltimateWarriors.Server.Repositories
         public async Task<Warrior> CreateWarrior(Warrior warrior)
         {
             const string sql = @"
-                INSERT INTO Warriors (Name, Description)
+                INSERT INTO public.Warriors (Name, Description)
                 VALUES (@Name, @Description)
                 RETURNING Id, Name, Description;";
             using var connection = new NpgsqlConnection(_connectionString);
@@ -43,7 +43,7 @@ namespace UltimateWarriors.Server.Repositories
         public async Task<Weapon> CreateWeapon(Weapon weapon)
         {
             const string sql = @"
-                INSERT INTO Weapons (Name, Description)
+                INSERT INTO public.Weapons (Name, Description)
                 VALUES (@Name, @Description)
                 RETURNING Id, Name, Description;";
             using var connection = new NpgsqlConnection(_connectionString);
@@ -52,14 +52,14 @@ namespace UltimateWarriors.Server.Repositories
 
         public async Task<Warrior> GetWarriorById(int id)
         {
-            const string sql = "SELECT Id, Name, Description FROM Warriors WHERE Id = @Id;";
+            const string sql = "SELECT Id, Name, Description FROM public.Warriors WHERE Id = @Id;";
             using var connection = new NpgsqlConnection(_connectionString);
             return await connection.QuerySingleOrDefaultAsync<Warrior>(sql, new { Id = id });
         }
 
         public async Task DeleteWarrior(int id)
         {
-            const string sql = "DELETE FROM Warriors WHERE Id = @Id;";
+            const string sql = "DELETE FROM public.Warriors WHERE Id = @Id;";
             using var connection = new NpgsqlConnection(_connectionString);
             await connection.ExecuteAsync(sql, new { Id = id });
         }
@@ -67,7 +67,7 @@ namespace UltimateWarriors.Server.Repositories
         public async Task<WarriorWeapon> AssociateWarriorWithWeapon(WarriorWeapon warriorWeapon)
         {
             const string sql = @"
-                INSERT INTO WarriorWeapon (WarriorId, WeaponId)
+                INSERT INTO public.WarriorWeapon (WarriorId, WeaponId)
                 VALUES (@WarriorId, @WeaponId)
                 RETURNING WarriorId, WeaponId;";
             using var connection = new NpgsqlConnection(_connectionString);
