@@ -30,8 +30,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Initialize the database
-Initialize(app.Configuration.GetConnectionString("DefaultConnection"));
+// Reset and Initialize the database
+ResetDatabase(app.Configuration.GetConnectionString("DefaultConnection"));
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -54,9 +54,18 @@ app.MapFallbackToFile("/index.html");
 
 app.Run();
 
-void Initialize(string connectionString)
+void ResetDatabase(string connectionString)
 {
     using var connection = new NpgsqlConnection(connectionString);
+    // Drop existing tables in correct order (due to foreign key constraints)
+    var dropTables = @"
+        DROP TABLE IF EXISTS WarriorWeapon CASCADE;
+        DROP TABLE IF EXISTS Warriors CASCADE;
+        DROP TABLE IF EXISTS Weapons CASCADE;
+    ";
+    connection.Execute(dropTables);
+
+    // Recreate tables using InitialSchema.sql
     var script = File.ReadAllText("Database/InitialSchema.sql");
     connection.Execute(script);
 }
