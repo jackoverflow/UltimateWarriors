@@ -5,24 +5,15 @@ using UltimateWarriors.Server.Models;
 
 namespace UltimateWarriors.Server.Repositories
 {
-    public interface IUltimateWarriorsRepository
-    {
-        Task<IEnumerable<Warrior>> GetAllWarriors();
-        Task<IEnumerable<Weapon>> GetAllWeapons();
-        Task<Warrior> CreateWarrior(Warrior warrior);
-        Task<Weapon> CreateWeapon(Weapon weapon);
-        Task<Warrior> GetWarriorById(int id);
-        Task DeleteWarrior(int id);
-        Task<WarriorWeapon> AssociateWarriorWithWeapon(WarriorWeapon warriorWeapon);
-    }
-
     public class UltimateWarriorsRepository : IUltimateWarriorsRepository
     {
         private readonly string _connectionString;
 
         public UltimateWarriorsRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection") 
+                ?? throw new ArgumentNullException(nameof(configuration), 
+                    "DefaultConnection string is not configured");
         }
 
         public async Task<IEnumerable<Warrior>> GetAllWarriors()

@@ -16,7 +16,7 @@ const CreateWarrior = () => {
         console.log('API URL:', process.env.REACT_APP_API_URL); 
 
         try {
-            const response = await axios.post('http://localhost:5108/api/Ultimatewarriors/warriors', payload);
+            const response = await axios.post('http://localhost:5108/api/ultimatewarriors', payload);
             console.log('Warrior created:', response.data);
             
             // Success message

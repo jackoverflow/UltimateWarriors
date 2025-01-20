@@ -18,39 +18,41 @@ namespace UltimateWarriors.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetWarriors()
         {
-            var warriors = await _repository.GetAllWarriorsAsync();
+            var warriors = await _repository.GetAllWarriors();
             return Ok(warriors);
         }
 
         [HttpGet("weapons")]
         public async Task<IActionResult> GetWeapons()
         {
-            var weapons = await _repository.GetAllWeaponsAsync();
+            var weapons = await _repository.GetAllWeapons();
             return Ok(weapons);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateWarrior([FromBody] Warriors warrior)
+        public async Task<IActionResult> CreateWarrior([FromBody] Warrior warrior)
         {
             if (warrior == null || string.IsNullOrEmpty(warrior.Name))
             {
                 return BadRequest("Warrior data is invalid.");
             }
 
-            var warriorId = await _repository.InsertWarriorAsync(warrior);
-            return CreatedAtAction(nameof(GetWarriors), new { id = warriorId }, warrior);
+            var createdWarrior = await _repository.CreateWarrior(warrior);
+            return CreatedAtAction(nameof(GetWarriors), new { id = createdWarrior.Id }, createdWarrior);
         }
 
+        // Removed the duplicate CreateWarrior method
+
         [HttpPost("weapons")]
-        public async Task<IActionResult> CreateWeapon([FromBody] Weapons weapon)
+        public async Task<IActionResult> CreateWeapon([FromBody] Weapon weapon)
         {
             if (weapon == null || string.IsNullOrEmpty(weapon.Name))
             {
                 return BadRequest("Weapon data is invalid.");
             }
 
-            var weaponId = await _repository.InsertWeaponAsync(weapon);
-            return CreatedAtAction(nameof(GetWeapons), new { id = weaponId }, weapon);
+            var createdWeapon = await _repository.CreateWeapon(weapon);
+            return CreatedAtAction(nameof(GetWeapons), new { id = createdWeapon.Id }, createdWeapon);
         }
 
         [HttpPost("warrior-weapon")]
@@ -61,22 +63,8 @@ namespace UltimateWarriors.Server.Controllers
                 return BadRequest("WarriorWeapon data is invalid.");
             }
 
-            await _repository.InsertWarriorWeaponAsync(warriorWeapon);
+            await _repository.AssociateWarriorWithWeapon(warriorWeapon);
             return Ok("Warrior associated with weapon successfully.");
-        }
-
-        [HttpPost("warriors")]
-        public async Task<ActionResult<Warrior>> CreateWarrior(Warrior warrior)
-        {
-            var createdWarrior = await _repository.CreateWarrior(warrior);
-            return CreatedAtAction(nameof(GetWarriorById), new { id = createdWarrior.Id }, createdWarrior);
-        }
-
-        [HttpGet("warriors")]
-        public async Task<ActionResult<IEnumerable<Warrior>>> GetAllWarriors()
-        {
-            var warriors = await _repository.GetAllWarriors();
-            return Ok(warriors);
         }
 
         [HttpGet("warriors/{id}")]
