@@ -64,5 +64,35 @@ namespace UltimateWarriors.Server.Controllers
             await _repository.InsertWarriorWeaponAsync(warriorWeapon);
             return Ok("Warrior associated with weapon successfully.");
         }
+
+        [HttpPost("warriors")]
+        public async Task<ActionResult<Warrior>> CreateWarrior(Warrior warrior)
+        {
+            var createdWarrior = await _repository.CreateWarrior(warrior);
+            return CreatedAtAction(nameof(GetWarriorById), new { id = createdWarrior.Id }, createdWarrior);
+        }
+
+        [HttpGet("warriors")]
+        public async Task<ActionResult<IEnumerable<Warrior>>> GetAllWarriors()
+        {
+            var warriors = await _repository.GetAllWarriors();
+            return Ok(warriors);
+        }
+
+        [HttpGet("warriors/{id}")]
+        public async Task<ActionResult<Warrior>> GetWarriorById(int id)
+        {
+            var warrior = await _repository.GetWarriorById(id);
+            if (warrior == null)
+                return NotFound();
+            return Ok(warrior);
+        }
+
+        [HttpDelete("warriors/{id}")]
+        public async Task<IActionResult> DeleteWarrior(int id)
+        {
+            await _repository.DeleteWarrior(id);
+            return NoContent();
+        }
     }
 }
