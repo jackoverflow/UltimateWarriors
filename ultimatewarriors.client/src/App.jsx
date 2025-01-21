@@ -7,6 +7,7 @@ import WeaponList from './Components/weapon-list.jsx';
 import CreateWarrior from './Components/create-warrior.jsx';
 import WarriorList from './Components/warrior-list.jsx';
 import CreateWarriorWithWeapons from './Components/create-warrior-weapons.jsx';
+import WarriorWeaponsList from './Components/warrior-weapons.jsx';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -56,6 +57,7 @@ function App() {
                 <Route path="/create-warrior" element={<CreateWarrior />} />
                 <Route path="/warriors" element={<WarriorList />} />
                 <Route path="/create-warrior-with-weapons" element={<CreateWarriorWithWeapons />} />
+                <Route path="/warriors-with-weapons" element={<WarriorWeaponsList />} />
             </Routes>
         </div>
     );
