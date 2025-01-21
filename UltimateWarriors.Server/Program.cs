@@ -59,6 +59,10 @@ app.Run();
 
 void ResetDatabase(string connectionString)
 {
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new ArgumentNullException(nameof(connectionString), "Connection string cannot be null or empty.");
+    }
     using var connection = new NpgsqlConnection(connectionString);
     // Drop existing tables in correct order (due to foreign key constraints)
     var dropTables = @"
