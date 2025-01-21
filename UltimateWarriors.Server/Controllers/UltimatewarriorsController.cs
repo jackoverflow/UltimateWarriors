@@ -86,7 +86,7 @@ namespace UltimateWarriors.Server.Controllers
         [HttpPost("create-warrior-with-weapons")]
         public async Task<IActionResult> CreateWarriorWithWeapons([FromBody] CreateWarriorWithWeaponsDto dto)
         {
-            if (dto == null || string.IsNullOrEmpty(dto.Warrior.Name))
+            if (dto == null || string.IsNullOrEmpty(dto.Name))
             {
                 return BadRequest("Warrior data is invalid.");
             }
