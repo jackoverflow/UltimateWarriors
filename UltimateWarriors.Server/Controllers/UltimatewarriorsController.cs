@@ -82,5 +82,30 @@ namespace UltimateWarriors.Server.Controllers
             await _repository.DeleteWarrior(id);
             return NoContent();
         }
+
+        public class CreateWarriorWithWeaponsRequest
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public List<int> WeaponIds { get; set; }
+        }
+
+        [HttpPost("warrior-with-weapons")]
+        public async Task<IActionResult> CreateWarriorWithWeapons([FromBody] CreateWarriorWithWeaponsRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.Name) || request.WeaponIds == null)
+            {
+                return BadRequest("Invalid request data");
+            }
+
+            var warrior = new Warrior
+            {
+                Name = request.Name,
+                Description = request.Description
+            };
+
+            var createdWarrior = await _repository.CreateWarriorWithWeapons(warrior, request.WeaponIds);
+            return CreatedAtAction(nameof(GetWarriorById), new { id = createdWarrior.Id }, createdWarrior);
+        }
     }
 }

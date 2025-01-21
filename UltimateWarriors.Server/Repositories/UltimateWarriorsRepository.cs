@@ -73,5 +73,43 @@ namespace UltimateWarriors.Server.Repositories
             using var connection = new NpgsqlConnection(_connectionString);
             return await connection.QuerySingleAsync<WarriorWeapon>(sql, warriorWeapon);
         }
+
+        public async Task<Warrior> CreateWarriorWithWeapons(Warrior warrior, List<int> weaponIds)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                // Create the warrior first
+                const string createWarriorSql = @"
+                    INSERT INTO public.Warriors (Name, Description)
+                    VALUES (@Name, @Description)
+                    RETURNING Id, Name, Description;";
+                
+                var createdWarrior = await connection.QuerySingleAsync<Warrior>(createWarriorSql, warrior, transaction);
+
+                // Associate weapons with the warrior
+                const string associateWeaponsSql = @"
+                    INSERT INTO public.WarriorWeapon (WarriorId, WeaponId)
+                    VALUES (@WarriorId, @WeaponId);";
+
+                foreach (var weaponId in weaponIds)
+                {
+                    await connection.ExecuteAsync(associateWeaponsSql, 
+                        new { WarriorId = createdWarrior.Id, WeaponId = weaponId }, 
+                        transaction);
+                }
+
+                transaction.Commit();
+                return createdWarrior;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
     }
 }
