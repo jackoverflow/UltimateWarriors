@@ -83,15 +83,15 @@ namespace UltimateWarriors.Server.Controllers
             return NoContent();
         }
 
-        [HttpPost("warrior-with-weapons")]
-        public async Task<IActionResult> CreateWarriorWithWeapons([FromBody] WarriorWithWeaponsDto warriorWithWeapons)
+        [HttpPost("create-warrior-with-weapons")]
+        public async Task<IActionResult> CreateWarriorWithWeapons([FromBody] CreateWarriorWithWeaponsDto dto)
         {
-            if (warriorWithWeapons == null || string.IsNullOrEmpty(warriorWithWeapons.Name))
+            if (dto == null || string.IsNullOrEmpty(dto.Warrior.Name))
             {
                 return BadRequest("Warrior data is invalid.");
             }
 
-            var createdWarrior = await _repository.CreateWarriorWithWeapons(warriorWithWeapons);
+            var createdWarrior = await _repository.CreateWarriorWithWeapons(dto);
             return CreatedAtAction(nameof(GetWarriorById), new { id = createdWarrior.Id }, createdWarrior);
         }
     }
