@@ -84,7 +84,7 @@ namespace UltimateWarriors.Server.Controllers
         }
 
         [HttpPost("create-warrior-with-weapons")]
-        public async Task<IActionResult> CreateWarriorWithWeapons([FromBody] CreateWarriorWithWeaponsDto dto)
+        public async Task<IActionResult> CreateWarriorWithWeapons([FromBody] WarriorWithWeaponsDto dto)
         {
             if (dto == null || string.IsNullOrEmpty(dto.Name))
             {
