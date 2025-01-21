@@ -54,8 +54,7 @@ namespace UltimateWarriors.Server.Repositories
         {
             const string sql = "SELECT Id, Name, Description FROM public.Warriors WHERE Id = @Id;";
             using var connection = new NpgsqlConnection(_connectionString);
-            var warrior = await connection.QuerySingleOrDefaultAsync<Warrior>(sql, new { Id = id });
-            return warrior ?? throw new KeyNotFoundException("Warrior not found.");
+            return await connection.QuerySingleOrDefaultAsync<Warrior>(sql, new { Id = id });
         }
 
         public async Task DeleteWarrior(int id)
@@ -73,6 +72,44 @@ namespace UltimateWarriors.Server.Repositories
                 RETURNING WarriorId, WeaponId;";
             using var connection = new NpgsqlConnection(_connectionString);
             return await connection.QuerySingleAsync<WarriorWeapon>(sql, warriorWeapon);
+        }
+
+        public async Task<Warrior> CreateWarriorWithWeapons(Warrior warrior, List<int> weaponIds)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                // Create the warrior first
+                const string createWarriorSql = @"
+                    INSERT INTO public.Warriors (Name, Description)
+                    VALUES (@Name, @Description)
+                    RETURNING Id, Name, Description;";
+                
+                var createdWarrior = await connection.QuerySingleAsync<Warrior>(createWarriorSql, warrior, transaction);
+
+                // Associate weapons with the warrior
+                const string associateWeaponsSql = @"
+                    INSERT INTO public.WarriorWeapon (WarriorId, WeaponId)
+                    VALUES (@WarriorId, @WeaponId);";
+
+                foreach (var weaponId in weaponIds)
+                {
+                    await connection.ExecuteAsync(associateWeaponsSql, 
+                        new { WarriorId = createdWarrior.Id, WeaponId = weaponId }, 
+                        transaction);
+                }
+
+                transaction.Commit();
+                return createdWarrior;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
     }
 }
