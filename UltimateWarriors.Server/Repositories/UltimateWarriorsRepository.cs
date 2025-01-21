@@ -54,7 +54,8 @@ namespace UltimateWarriors.Server.Repositories
         {
             const string sql = "SELECT Id, Name, Description FROM public.Warriors WHERE Id = @Id;";
             using var connection = new NpgsqlConnection(_connectionString);
-            return await connection.QuerySingleOrDefaultAsync<Warrior>(sql, new { Id = id });
+            var warrior = await connection.QuerySingleOrDefaultAsync<Warrior>(sql, new { Id = id });
+            return warrior ?? throw new KeyNotFoundException("Warrior not found.");
         }
 
         public async Task DeleteWarrior(int id)
@@ -79,10 +80,15 @@ namespace UltimateWarriors.Server.Repositories
             const string sql = @"
                 INSERT INTO public.Warriors (Name, Description)
                 VALUES (@Name, @Description)
-                RETURNING Id, Name, Description;";
+                RETURNING Id;";
 
             using var connection = new NpgsqlConnection(_connectionString);
-            var createdWarrior = await connection.QuerySingleAsync<Warrior>(sql, new 
+            
+            // Log the SQL command and parameters from the form
+            Console.WriteLine("Executing SQL: " + sql);
+            Console.WriteLine("Parameters: Name = {0}, Description = {1}", warriorWithWeapons.Name, warriorWithWeapons.Description);
+
+            var warriorId = await connection.ExecuteScalarAsync<int>(sql, new 
             {
                 Name = warriorWithWeapons.Name,
                 Description = warriorWithWeapons.Description
@@ -94,10 +100,15 @@ namespace UltimateWarriors.Server.Repositories
                 const string associateSql = @"
                     INSERT INTO public.WarriorWeapon (WarriorId, WeaponId)
                     VALUES (@WarriorId, @WeaponId);";
-                await connection.ExecuteAsync(associateSql, new { WarriorId = createdWarrior.Id, WeaponId = weaponId });
+
+                // Log the SQL command and parameters for association
+                Console.WriteLine("Executing SQL: " + associateSql);
+                Console.WriteLine("Parameters: WarriorId = {0}, WeaponId = {1}", warriorId, weaponId);
+
+                await connection.ExecuteAsync(associateSql, new { WarriorId = warriorId, WeaponId = weaponId });
             }
 
-            return createdWarrior;
+            return new Warrior { Id = warriorId, Name = warriorWithWeapons.Name, Description = warriorWithWeapons.Description };
         }
     }
 }
