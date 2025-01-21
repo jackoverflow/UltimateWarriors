@@ -13,5 +13,6 @@ namespace UltimateWarriors.Server.Repositories
         Task<Warrior> GetWarriorById(int id);
         Task DeleteWarrior(int id);
         Task<WarriorWeapon> AssociateWarriorWithWeapon(WarriorWeapon warriorWeapon);
+        Task<Warrior> CreateWarriorWithWeapons(WarriorWithWeaponsDto warriorWithWeapons);
     }
 } 
