@@ -91,7 +91,34 @@ namespace UltimateWarriors.Server.Controllers
                 return BadRequest("Warrior data is invalid.");
             }
 
-            var createdWarrior = await _repository.CreateWarriorWithWeapons(dto);
+            // Step 1: Create the warrior
+            var warrior = new Warrior
+            {
+                Name = dto.Name,
+                Description = dto.Description
+            };
+
+            var createdWarrior = await _repository.CreateWarrior(warrior);
+
+            // Step 2: Associate weapons with the created warrior
+            foreach (var weaponId in dto.WeaponIds)
+            {
+                var warriorWeapon = new WarriorWeapon
+                {
+                    WarriorId = createdWarrior.Id,
+                    WeaponId = weaponId
+                };
+
+                // Ensure the weapon exists before associating
+                var weaponExists = await _repository.GetWeaponById(weaponId); // Assuming you have this method
+                if (weaponExists == null)
+                {
+                    return BadRequest($"Weapon with ID {weaponId} does not exist.");
+                }
+
+                await _repository.AssociateWarriorWithWeapon(warriorWeapon);
+            }
+
             return CreatedAtAction(nameof(GetWarriorById), new { id = createdWarrior.Id }, createdWarrior);
         }
     }
